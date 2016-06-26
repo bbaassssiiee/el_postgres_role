@@ -1,4 +1,10 @@
 ---
+- name: 'make sure pg_user and pg_password are defined'
+  fail: msg='variables undefined'
+  when:
+    - pg_user is undefined
+    - pg_password is undefined
+
 - name: 'install the postgres yum repo'
   become: yes
   yum: name={{postgres_repo}} state=present

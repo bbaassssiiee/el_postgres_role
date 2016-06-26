@@ -168,7 +168,7 @@
 
 - name: 'startup postgres'
   service: name=postgresql-9.4 state=started
-  when: role == "master"
+  when: role is undefined or role == "master"
   tags:
     - postgres
     - config
@@ -176,7 +176,7 @@
 
 - name: 'initialize the postgresql user'
   postgresql_user: name='{{ pg_username }}' role_attr_flags='CREATEDB,CREATEROLE'
-  when: role == "master"
+  when: role is undefined or role == "master"
   become: yes
   register: create_pg_user
   tags:
@@ -186,7 +186,7 @@
 - name: 'set the password for the postgres user'
   postgresql_user: name='{{ pg_username }}' password="{{ pg_password }}"
   become: yes
-  when: role == "master"
+  when: role is undefined or role == "master"
   tags:
     - postgres
     - pguser
@@ -195,7 +195,7 @@
   postgresql_user: name='replicator' 
                    role_attr_flags='REPLICATION' 
                    password="{{ pg_password }}"
-  when: role == "master"
+  when: role is undefined or role == "master"
   tags:
     - postgres
     - pguser
