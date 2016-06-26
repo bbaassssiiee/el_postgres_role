@@ -68,7 +68,7 @@
   template: src=start_pg_slave.sh.j2 dest=/usr/local/bin/start_pg_slave.sh backup=no
             owner=root mode=0700
   become: yes
-  when: role == "slave"
+  when: role is defined and role== "slave"
   tags:
     - config
     - postgres
@@ -206,17 +206,9 @@
     command: /usr/local/bin/start_pg_slave.sh
     responses:
       Password: "{{ pg_password }}"
-  when: role == "slave"
+  when: role is defined and role== "slave"
   tags:
     - postgres
     - replica
     - startslave
-
-- name: 'create the postgresql database for tower'
-  postgresql_db: name={{ pg_database }} owner={{ pg_username }} state=present login_user=postgres
-  when: role == "master"
-  become: yes
-  tags:
-    - postgres
-    - pguser
 
