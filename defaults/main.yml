@@ -6,6 +6,7 @@ postgres_packages:
   - postgresql94-server
   - postgresql94-contrib
   - perl-DBD-Pg
+  - python-pip
   - python-psycopg2
 
 postgres_jdbc_url: "https://jdbc.postgresql.org/download/postgresql-9.4-1201.jdbc41.jar"
