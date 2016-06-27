@@ -1,5 +1,9 @@
 ---
-- name: 'make sure pg_user and pg_password are defined'
+- name: 'verify the version of your OS.'
+  fail: msg='enterprise undefined'
+  when: ansible_os_family != "RedHat"
+
+- name: 'make sure pg_user and pg_password are defined.'
   fail: msg='variables undefined'
   when:
     - pg_user is undefined
