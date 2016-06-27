@@ -3,10 +3,10 @@
   fail: msg='enterprise undefined'
   when: ansible_os_family != "RedHat"
 
-- name: 'make sure pg_user and pg_password are defined.'
+- name: 'make sure pg_username and pg_password are defined.'
   fail: msg='variables undefined'
   when:
-    - pg_user is undefined
+    - pg_username is undefined
     - pg_password is undefined
 
 - name: 'install the postgres yum repo'
