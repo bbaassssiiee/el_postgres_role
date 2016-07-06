@@ -65,10 +65,12 @@
     - replica
 
 - name: 'copy start_pg_slave.sh'
-  template: src=start_pg_slave.sh.j2 dest=/usr/local/bin/start_pg_slave.sh backup=no
-            owner=root mode=0700
+  template: src=start_pg_slave.sh.j2
+                 dest=/usr/local/bin/start_pg_slave.sh
+                 backup=no
+                 owner=root mode=0700
   become: yes
-  when: role is defined and role== "slave"
+  when: role is defined and role == "slave"
   tags:
     - config
     - postgres
@@ -206,7 +208,7 @@
     command: /usr/local/bin/start_pg_slave.sh
     responses:
       Password: "{{ pg_password }}"
-  when: role is defined and role== "slave"
+  when: role is defined and role == "slave"
   tags:
     - postgres
     - replica
