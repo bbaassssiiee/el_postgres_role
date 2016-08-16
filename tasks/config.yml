@@ -5,6 +5,7 @@
   file: path=~/.bashrc state=touch
   tags:
     - postgres
+    - el_postgres_role
     - bash
 
 - name: 'amend path variable'
@@ -13,6 +14,7 @@
               state=present
   tags:
     - postgres
+    - el_postgres_role
     - bash
 
 - name: 'amend path variable'
@@ -21,6 +23,7 @@
               state=present
   tags:
     - postgres
+    - el_postgres_role
     - bash
 
 - name: 'init postgresql database'
@@ -33,6 +36,7 @@
     - install
     - init
     - postgres
+    - el_postgres_role
 
 - name: 'init postgresql database'
   command: /usr/pgsql-9.4/bin/postgresql94-setup initdb creates=/var/lib/pgsql/9.4/data/postgresql.conf
@@ -44,6 +48,7 @@
     - install
     - init
     - postgres
+    - el_postgres_role
 
 - name: 'ensure postgresql is running automatically at boot'
   service: name=postgresql-9.4 enabled=yes
@@ -52,6 +57,7 @@
   tags:
     - install
     - postgres
+    - el_postgres_role
 
 - name: 'configure pg_hba.conf'
   template: src=pg_hba.conf.j2 dest=/var/lib/pgsql/9.4/data/pg_hba.conf backup=no
@@ -62,6 +68,7 @@
   tags:
     - config
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'copy start_pg_slave.sh'
@@ -74,6 +81,7 @@
   tags:
     - config
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'unset ip to listen on to ipv4 localhost'
@@ -85,12 +93,14 @@
   tags:
     - config
     - postgres
+    - el_postgres_role
 
 - name: 'see if iptables file exists'
   stat: path=/etc/sysconfig/iptables
   register: iptables
   tags:
     - postgres
+    - el_postgres_role
 
 - name: 'fix "postgresql" in /etc/sysconfig/iptables file'
   become: yes
@@ -104,6 +114,7 @@
     - config
     - iptables
     - postgres
+    - el_postgres_role
 
 - name: 'set listen on on ipv4 addresses'
   become: yes
@@ -111,6 +122,7 @@
               line="listen_addresses = '*'" state=present
   tags:
     - postgres
+    - el_postgres_role
 
 - name: 'set replication setting: wal_level'
   become: yes
@@ -118,6 +130,7 @@
               line="wal_level = hot_standby" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: max_wal_senders'
@@ -126,6 +139,7 @@
               line="max_wal_senders = 3" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: checkpoint_segments'
@@ -134,6 +148,7 @@
               line="checkpoint_segments = 8" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: wal_keep_segments'
@@ -142,6 +157,7 @@
               line="wal_keep_segments = 8" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: hot_standby'
@@ -150,6 +166,7 @@
               line="hot_standby = on" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: archive_mode'
@@ -158,6 +175,7 @@
               line="archive_mode = on" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'set replication setting: archive_command'
@@ -166,6 +184,7 @@
               line="archive_command = 'cd .'" state=present
   tags:
     - postgres
+    - el_postgres_role
     - replica
 
 - name: 'startup postgres'
@@ -173,6 +192,7 @@
   when: role is undefined or role == "master"
   tags:
     - postgres
+    - el_postgres_role
     - config
     - pguser
 
@@ -183,6 +203,7 @@
   register: create_pg_user
   tags:
     - postgres
+    - el_postgres_role
     - pguser
 
 - name: 'set the password for the postgres user'
@@ -191,6 +212,7 @@
   when: role is undefined or role == "master"
   tags:
     - postgres
+    - el_postgres_role
     - pguser
 
 - name: 'initialize the replicator user'
@@ -200,6 +222,7 @@
   when: role is undefined or role == "master"
   tags:
     - postgres
+    - el_postgres_role
     - pguser
     - replica
   
@@ -211,6 +234,7 @@
   when: role is defined and role == "slave"
   tags:
     - postgres
+    - el_postgres_role
     - replica
     - startslave
 

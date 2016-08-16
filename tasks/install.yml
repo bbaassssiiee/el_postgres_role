@@ -2,12 +2,18 @@
 - name: 'verify the version of your OS.'
   fail: msg='enterprise undefined'
   when: ansible_os_family != "RedHat"
+  tags:
+    - postgres
+    - el_postgres_role
 
 - name: 'make sure pg_username and pg_password are defined.'
   fail: msg='variables undefined'
   when:
     - pg_username is undefined
     - pg_password is undefined
+  tags:
+    - postgres
+    - el_postgres_role
 
 - name: 'install the postgres yum repo'
   become: yes
@@ -16,6 +22,7 @@
   tags:
     - install
     - postgres
+    - el_postgres_role
 
 - name: 'install postgres packages'
   become: yes
@@ -25,13 +32,15 @@
   tags:
     - install
     - postgres
+    - el_postgres_role
 
 - name: 'install required libraries'
   become: yes
   pip: name={{ item }} state=present
+  with_items:
+    - '{{ postgres_pips }}'
   tags:
     - install
     - postgres
+    - el_postgres_role
     - startslave
-  with_items:
-    - '{{ postgres_pips }}'
