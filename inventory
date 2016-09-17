@@ -1,0 +1,4 @@
+[dataservers]
+postgres-master ansible_ssh_host=192.168.123.2 role=master
+postgres-slave ansible_ssh_host=192.168.123.3 role=slave
+

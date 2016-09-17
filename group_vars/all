@@ -1,0 +1,5 @@
+---
+el_postgres_user: testuser
+el_postgres_pass: testpass
+el_postgres_mip: 192.168.123.2
+el_postgres_net: 192.168.123.1/24

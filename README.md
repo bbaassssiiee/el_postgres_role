@@ -7,23 +7,20 @@ Requirements
 ------------
 Internet. RedHat Linux 6 or 7, or Centos 6 or 7.
 
-This role wast tested with this vagrant box:
+This role wast tested with molecule:
 
-  config.vm.box = "Opscode centos-6.5"
-  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box"
 
 Role Variables
 --------------
 The first three vars you must set, the others are optional.
 
-    pg_ip       # This is the ip address of the primary or master database
-    pg_username # This is your user
-    pg_password # This is your password
-    
-    pg_subnet   # 192.168.20.0/24 This is the subnet granted access
-		role        # If you want 2 hosts then one is master and the other slave
-    slave_ip    # This is the ip address of the slave when you use 2 databases
+    el_postgres_mip  # This is the ip address of the primary or master database
+    el_postgres_user # This is your user
+    el_postgres_pass # This is your password
 
+    el_postgres_net  # 192.168.20.0/24 This is the subnet granted access
+	  el_postgres_role # If you want 2 hosts then one is master, the other slave
+    el_postgres_sip  # The ip address of the slave when you use 2 databases
 
 
 Dependencies
