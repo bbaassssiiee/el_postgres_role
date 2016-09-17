@@ -6,18 +6,18 @@
     - postgres
     - el_postgres_role
 
-- name: 'make sure pg_username and pg_password are defined.'
+- name: 'make sure el_postgres_user and el_postgres_pass are defined.'
   fail: msg='variables undefined'
   when:
-    - pg_username is undefined
-    - pg_password is undefined
+    - el_postgres_user is undefined
+    - el_postgres_pass is undefined
   tags:
     - postgres
     - el_postgres_role
 
 - name: 'install the postgres yum repo'
   become: yes
-  yum: name={{postgres_repo}} state=present
+  yum: name={{ el_postgres_repo }} state=present
   when: ansible_os_family == "RedHat"
   tags:
     - install
@@ -27,7 +27,7 @@
 - name: 'install postgres packages'
   become: yes
   yum: name={{ item }} state=present
-  with_items: '{{ postgres_packages }}'
+  with_items: '{{ el_postgres_packages }}'
   when: ansible_os_family == "RedHat"
   tags:
     - install
@@ -38,7 +38,7 @@
   become: yes
   pip: name={{ item }} state=present
   with_items:
-    - '{{ postgres_pips }}'
+    - '{{ el_postgres_pips }}'
   tags:
     - install
     - postgres

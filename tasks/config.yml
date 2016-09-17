@@ -60,7 +60,7 @@
     - el_postgres_role
 
 - name: 'configure pg_hba.conf'
-  template: src=pg_hba.conf.j2 dest=/var/lib/pgsql/9.4/data/pg_hba.conf backup=no
+  template: src={{ your_template_path | default() }}pg_hba.conf.j2 dest=/var/lib/pgsql/9.4/data/pg_hba.conf backup=no
             owner=postgres
   become: yes
   notify:
@@ -197,7 +197,7 @@
     - pguser
 
 - name: 'initialize the postgresql user'
-  postgresql_user: name='{{ pg_username }}' role_attr_flags='CREATEDB,CREATEROLE'
+  postgresql_user: name='{{ el_postgres_user }}' role_attr_flags='CREATEDB,CREATEROLE'
   when: role is undefined or role == "master"
   become: yes
   register: create_pg_user
@@ -207,7 +207,7 @@
     - pguser
 
 - name: 'set the password for the postgres user'
-  postgresql_user: name='{{ pg_username }}' password="{{ pg_password }}"
+  postgresql_user: name='{{ el_postgres_user }}' password="{{ el_postgres_pass }}"
   become: yes
   when: role is undefined or role == "master"
   tags:
@@ -218,7 +218,7 @@
 - name: 'initialize the replicator user'
   postgresql_user: name='replicator' 
                    role_attr_flags='REPLICATION' 
-                   password="{{ pg_password }}"
+                   password="{{ el_postgres_pass }}"
   when: role is undefined or role == "master"
   tags:
     - postgres
@@ -230,7 +230,7 @@
   expect: 
     command: /usr/local/bin/start_pg_slave.sh
     responses:
-      Password: "{{ pg_password }}"
+      Password: "{{ el_postgres_pass }}"
   when: role is defined and role == "slave"
   tags:
     - postgres

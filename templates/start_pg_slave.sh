@@ -9,12 +9,12 @@ echo Cleaning up old cluster directory
 su - postgres -c "rm -rf /var/lib/pgsql/9.4/data/*"
 
 echo Starting base backup as replicator
-su - postgres -c "pg_basebackup -w -h {{ pg_ip }} -D /var/lib/pgsql/9.4/data -X stream -U replicator -v -P"
+su - postgres -c "pg_basebackup -w -h {{ el_postgres_mip }} -D /var/lib/pgsql/9.4/data -X stream -U replicator -v -P"
 
 echo Writing recovery.conf file
 su - postgres -c "cat > /var/lib/pgsql/9.4/data/recovery.conf <<- EOF
 standby_mode = 'on'
-primary_conninfo = 'host={{ pg_ip }} port={{ pg_port }} user=replicator password={{ pg_password }}'
+primary_conninfo = 'host={{ el_postgres_mip }} port={{ el_postgres_port }} user=replicator password={{ el_postgres_pass }}'
 trigger_file = '/tmp/postgresql.trigger'
 EOF
 "

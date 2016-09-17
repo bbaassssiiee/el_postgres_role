@@ -11,12 +11,12 @@ host    all         all         ::1/128               trust
 
 {% if slave_ip is defined %}
     # The database slave needs access to the database
-host    replication all         {{ slave_ip }}/32     trust
-host    replication all         {{ pg_ip }}/32        trust
+host    replication all         {{ el_postgres_sip }}/32     trust
+host    replication all         {{ el_postgres_mip }}/32        trust
    # The database needs access to the database slave
 {% endif %}
 
 {% if pg_subnet is defined %}
 # The application needs access to the database
-host    all         all         {{ pg_subnet }}       password
+host    all         all         {{ el_postgres_net }}       password
 {% endif %}
