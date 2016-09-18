@@ -21,9 +21,6 @@ molecule:
     - .molecule
 
 
-ansible:
-  inventory_file: inventory
-
 vagrant:
   raw_config_args:
     - "ssh.insert_key = false"
@@ -67,5 +64,3 @@ vagrant:
 
 verifier:
   name: testinfra
-  options:
-    n: 1
