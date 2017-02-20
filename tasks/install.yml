@@ -15,6 +15,15 @@
     - postgres
     - el_postgres_role
 
+- name: 'install the EPEL yum repo'
+  become: yes
+  yum: name=epel-release state=present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - install
+    - postgres
+    - el_postgres_role
+
 - name: 'install the postgres yum repo'
   become: yes
   yum: name={{ el_postgres_repo }} state=present
